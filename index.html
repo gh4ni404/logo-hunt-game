@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Hunt: Visual Identity Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6C63FF;
+            --secondary: #FF6584;
+            --accent: #36D1DC;
+            --dark: #2A2D43;
+            --light: #F8F9FA;
+            --correct: #4CAF50;
+            --wrong: #FF5252;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2A2D43 0%, #1C1E2E 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            height: 95vh;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #A0A3BD;
+            margin-bottom: 15px;
+        }
+
+        .level-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .level-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .level-dot.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+
+        .level-dot.completed {
+            background: var(--correct);
+        }
+
+        /* Game Info Styles */
+        .game-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 12px;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .info-box {
+            text-align: center;
+            padding: 8px;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: #A0A3BD;
+            margin-top: 4px;
+        }
+
+        /* Game Area Styles */
+        .game-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        /* Logo Display - Aspect Ratio 1:1 */
+        .logo-display-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .logo-display {
+            width: 100%;
+            max-width: 300px;
+            aspect-ratio: 1/1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin: 0 auto;
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: white;
+            border-radius: 128px;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            transition: transform 0.3s, filter 0.5s;
+        }
+
+        .logo-image.blurred {
+            filter: blur(15px) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        .logo-image.revealed {
+            filter: none;
+            animation: reveal 0.8s ease-out;
+        }
+
+        @keyframes reveal {
+            0% { filter: blur(15px); opacity: 0.5; }
+            100% { filter: blur(0); opacity: 1; }
+        }
+
+        .hint-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .hint-btn {
+            background: rgba(108, 99, 255, 0.2);
+            border: 1px solid var(--primary);
+            color: var(--light);
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .hint-btn:hover {
+            background: rgba(108, 99, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .hint-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hint-btn i {
+            font-size: 0.9rem;
+        }
+
+        /* Options Container - Horizontal Layout */
+        .options-container {
+            display: flex;
+            gap: 10px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 800px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            min-width: 120px;
+            max-width: 180px;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .option-btn.selected {
+            background: rgba(108, 99, 255, 0.3);
+            border-color: var(--primary);
+        }
+
+        .option-btn.correct {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: var(--correct);
+            color: #C8E6C9;
+        }
+
+        .option-btn.wrong {
+            background: rgba(255, 82, 82, 0.3);
+            border-color: var(--wrong);
+            color: #FFCDD2;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* Controls Section */
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, var(--primary), #8A84FF);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+            flex: 1;
+            max-width: 200px;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .control-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.6);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .control-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+
+        .control-btn.secondary:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .fact-box {
+            background: rgba(54, 209, 220, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 5px;
+            display: none;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+
+        .fact-box.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .fact-title {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .fact-text {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #E0E0E0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #A0A3BD;
+            flex-shrink: 0;
+        }
+
+        .logo-dkv {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #2A2D43 0%, #1C1E2E 100%);
+            border-radius: 25px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow: hidden;
+        }
+
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            border-radius: 25px 25px 0 0;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+
+        .modal-subtitle {
+            color: #A0A3BD;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            background: rgba(108, 99, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #A0A3BD;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, var(--primary), #8A84FF);
+            color: white;
+        }
+
+        .modal-btn.secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            color: var(--light);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .share-modal {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .share-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .share-btn.instagram {
+            background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D);
+            color: white;
+        }
+
+        .share-btn.whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .options-container {
+                max-width: 600px;
+            }
+            
+            .option-btn {
+                min-width: 100px;
+                max-width: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                height: 100vh;
+                padding: 10px;
+                gap: 10px;
+            }
+            
+            header {
+                padding: 12px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 0.85rem;
+            }
+            
+            .game-info {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 10px;
+            }
+            
+            .logo-display {
+                max-width: 250px;
+            }
+            
+            .options-container {
+                max-width: 500px;
+                flex-wrap: wrap;
+            }
+            
+            .option-btn {
+                min-width: 45%;
+                max-width: 45%;
+                font-size: 0.85rem;
+                padding: 10px 12px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .hint-btn {
+                font-size: 0.75rem;
+                padding: 6px 12px;
+            }
+            
+            .modal {
+                padding: 20px;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+            }
+            
+            .modal-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+            
+            .share-modal {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .info-value {
+                font-size: 1.3rem;
+            }
+            
+            .logo-display {
+                max-width: 200px;
+            }
+            
+            .option-btn {
+                min-width: 100%;
+                max-width: 100%;
+                font-size: 0.8rem;
+            }
+            
+            .hint-btn {
+                font-size: 0.7rem;
+                padding: 5px 10px;
+            }
+        }
+
+        /* Animasi kemenangan */
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            top: -10px;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-eye"></i> LOGO HUNT</h1>
+            <p class="subtitle">Uji pengetahuan visual Anda dalam tebak logo. Tantang diri Anda dengan tiga level berbeda!</p>
+            <div class="level-indicator" id="levelIndicator"></div>
+        </header>
+
+        <div class="game-info">
+            <div class="info-box">
+                <div class="info-value" id="score">0</div>
+                <div class="info-label">SKOR</div>
+            </div>
+            <div class="info-box">
+                <div class="info-value" id="level">1</div>
+                <div class="info-label">LEVEL</div>
+            </div>
+            <div class="info-box">
+                <div class="info-value" id="hints">3</div>
+                <div class="info-label">PETUNJUK</div>
+            </div>
+            <div class="info-box">
+                <div class="info-value" id="progress">1/8</div>
+                <div class="info-label">PROGRESS</div>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="logo-display-container">
+                <div class="logo-display">
+                    <img id="logoImg" class="logo-image blurred" src="" alt="Logo untuk ditebak">
+                </div>
+                
+                <div class="hint-buttons">
+                    <button class="hint-btn" id="hintReveal">
+                        <i class="fas fa-eye"></i> Buka Sebagian
+                    </button>
+                    <button class="hint-btn" id="hintLetters">
+                        <i class="fas fa-font"></i> Buka Huruf
+                    </button>
+                </div>
+            </div>
+
+            <div class="options-container" id="optionsContainer"></div>
+
+            <div class="controls-section">
+                <div class="controls">
+                    <button class="control-btn secondary" id="skipBtn">
+                        <i class="fas fa-forward"></i> Skip
+                    </button>
+                    <button class="control-btn" id="submitBtn" disabled>
+                        <i class="fas fa-paper-plane"></i> Submit
+                    </button>
+                </div>
+
+                <div class="fact-box" id="factBox">
+                    <div class="fact-title">
+                        <i class="fas fa-lightbulb"></i> FAKTA MENARIK
+                    </div>
+                    <p class="fact-text" id="factText">Fakta tentang logo ini akan muncul di sini setelah Anda menjawab.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Game ini adalah bagian dari pameran <span class="logo-dkv">Desain Komunikasi Visual</span>.</p>
+            <p>© 2023 - Dibuat untuk menunjukkan pentingnya identitas visual dalam branding.</p>
+        </div>
+    </div>
+
+    <!-- Modal untuk Hasil Level -->
+    <div class="modal-overlay" id="resultModal">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <div class="modal-icon" id="modalIcon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 class="modal-title" id="modalTitle">Level Selesai!</h2>
+                <p class="modal-subtitle" id="modalSubtitle">Anda telah menyelesaikan level 1</p>
+            </div>
+
+            <div class="modal-stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="modalScore">0</div>
+                    <div class="stat-label">SKOR</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="modalCorrect">0/8</div>
+                    <div class="stat-label">JAWABAN BENAR</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="modalHints">0</div>
+                    <div class="stat-label">PETUNJUK DIGUNAKAN</div>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" id="modalPlayAgain">
+                    <i class="fas fa-redo"></i> Main Lagi
+                </button>
+                <button class="modal-btn primary" id="modalNextLevel">
+                    <i class="fas fa-arrow-right"></i> Level Berikutnya
+                </button>
+            </div>
+
+            <div class="share-modal">
+                <button class="share-btn instagram" id="modalShareInstagram">
+                    <i class="fab fa-instagram"></i> Share
+                </button>
+                <button class="share-btn whatsapp" id="modalShareWhatsapp">
+                    <i class="fab fa-whatsapp"></i> Share
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data game yang diperbarui dengan logo yang lebih stabil
+        const gameData = {
+            level1: [
+                {
+                    image: "assets/img/nike.png",
+                    answer: "Nike",
+                    options: ["Nike", "Adidas", "Puma", "Reebok"],
+                    fact: "Logo Nike (Swoosh) dirancang oleh Carolyn Davidson pada 1971 dengan bayaran hanya $35. Sekarang menjadi salah satu logo paling ikonis di dunia.",
+                    difficulty: 1
+                },
+                {
+                    image: "assets/img/apple.png",
+                    answer: "Apple",
+                    options: ["Microsoft", "Apple", "Samsung", "Dell"],
+                    fact: "Logo Apple awalnya menampilkan Isaac Newton duduk di bawah pohon apel. Desain sekarang yang lebih sederhana dipilih untuk mewakili kesederhanaan dan kecanggihan.",
+                    difficulty: 1
+                },
+                {
+                    image: "assets/img/starbucks.png",
+                    answer: "Starbucks",
+                    options: ["Starbucks", "Dunkin' Donuts", "McDonald's", "Costa Coffee"],
+                    fact: "Logo Starbucks menampilkan Siren (putri duyung) dari mitologi Yunani. Hijau melambangkan kesegaran, pertumbuhan, dan keberlanjutan.",
+                    difficulty: 1
+                },
+                {
+                    image: "assets/img/amazon.png",
+                    answer: "Amazon",
+                    options: ["Amazon", "eBay", "Alibaba", "Walmart"],
+                    fact: "Panah di logo Amazon membentuk senyum dan mengarah dari A ke Z, melambangkan bahwa mereka menjual segala sesuatu dari A sampai Z.",
+                    difficulty: 1
+                },
+                {
+                    image: "assets/img/batman.png",
+                    answer: "Batman",
+                    options: ["Batman", "Superman", "Spiderman", "Iron Man"],
+                    fact: "Logo Batman (bat-symbol) telah mengalami banyak perubahan sejak pertama kali muncul pada 1939. Desain sekarang lebih angular dan modern.",
+                    difficulty: 1
+                },
+                {
+                    image: "assets/img/mcdonald.png",
+                    answer: "McDonald's",
+                    options: ["McDonald's", "Burger King", "KFC", "Wendy's"],
+                    fact: "Golden Arches (lengkungan emas) pada logo McDonald's awalnya merupakan bagian arsitektur restoran, kemudian menjadi identitas brand yang kuat.",
+                    difficulty: 1
+                },
+                {
+                    image: "assets/img/coca-cola.png",
+                    answer: "Coca Cola",
+                    options: ["Coca Cola", "Pepsi", "Sprite", "Fanta"],
+                    fact: "Logo Coca-Cola menggunakan font Spencerian Script yang populer di akhir abad 19. Desainnya hampir tidak berubah sejak 1887.",
+                    difficulty: 1
+                },
+                {
+                    image: "assets/img/adidas.png",
+                    answer: "Adidas",
+                    options: ["Adidas", "Nike", "Puma", "Reebok"],
+                    fact: "Logo Adidas dengan tiga garis melambangkan tantangan atletik dan berasal dari pita sepatu. Tiga garis juga mewakili tiga benua.",
+                    difficulty: 1
+                }
+            ],
+            level2: [
+                {
+                    image: "assets/img/google.png",
+                    answer: "Google",
+                    options: ["Google", "Yahoo", "Bing", "DuckDuckGo"],
+                    fact: "Warna primer pada logo Google sengaja tidak mengikuti urutan RGB untuk menunjukkan bahwa Google tidak mengikuti aturan konvensional.",
+                    difficulty: 2
+                },
+                {
+                    image: "assets/img/microsoft.png",
+                    answer: "Microsoft",
+                    options: ["Microsoft", "IBM", "Intel", "HP"],
+                    fact: "Logo Microsoft dengan 4 kotak berwarna mewakili produk utama mereka: Windows (biru), Office (merah), Xbox (hijau), dan Bing (kuning).",
+                    difficulty: 2
+                },
+                {
+                    image: "assets/img/netflix.png",
+                    answer: "Netflix",
+                    options: ["Netflix", "Hulu", "Disney+", "HBO Max"],
+                    fact: "Logo Netflix yang sederhana dan tebal dirancang untuk mudah dikenali bahkan dalam ukuran kecil di perangkat mobile.",
+                    difficulty: 2
+                },
+                {
+                    image: "assets/img/twitter.png",
+                    answer: "Twitter",
+                    options: ["Twitter", "Facebook", "Instagram", "LinkedIn"],
+                    fact: "Burung Twitter bernama 'Larry' diambil dari nama pemain basket Larry Bird. Logo mewakili kebebasan, harapan, dan keterbatasan karakter.",
+                    difficulty: 2
+                },
+                {
+                    image: "assets/img/instagram.png",
+                    answer: "Instagram",
+                    options: ["Snapchat", "TikTok", "Instagram", "Pinterest"],
+                    fact: "Logo Instagram terinspirasi dari kamera instan Polaroid dan kamera Brownie. Gradien warna melambangkan matahari terbenam California.",
+                    difficulty: 2
+                },
+                {
+                    image: "assets/img/facebook.png",
+                    answer: "Facebook",
+                    options: ["Facebook", "Meta", "MySpace", "Twitter"],
+                    fact: "Warna biru dipilih oleh Mark Zuckerberg karena ia memiliki buta warna merah-hijau, sehingga biru adalah warna yang paling mudah ia lihat.",
+                    difficulty: 2
+                },
+                {
+                    image: "assets/img/pepsi.png",
+                    answer: "Pepsi",
+                    options: ["Pepsi", "Coca Cola", "Sprite", "Fanta"],
+                    fact: "Logo Pepsi dengan lingkaran merah, putih, dan biru awalnya terinspirasi dari bendera Amerika. Desain sekarang lebih minimalis.",
+                    difficulty: 2
+                },
+                {
+                    image: "assets/img/dell.png",
+                    answer: "Dell",
+                    options: ["Dell", "HP", "Lenovo", "Acer"],
+                    fact: "Logo Dell dengan huruf 'E' yang miring melambangkan inovasi dan pendekatan yang berbeda dalam teknologi.",
+                    difficulty: 2
+                }
+            ],
+            level3: [
+                {
+                    image: "assets/img/youtube.png",
+                    answer: "YouTube",
+                    options: ["YouTube", "Vimeo", "Twitch", "Dailymotion"],
+                    fact: "Logo YouTube dengan tombol play merah telah menjadi simbol konten video online. Warna merah dipilih karena menarik perhatian.",
+                    difficulty: 3
+                },
+                {
+                    image: "assets/img/playstation.png",
+                    answer: "PlayStation",
+                    options: ["PlayStation", "Xbox", "Nintendo", "Steam"],
+                    fact: "Logo PlayStation dengan P, S, dan bentuk geometris mewakili multidimensi pengalaman gaming. Warna-warna mewakili joypad.",
+                    difficulty: 3
+                },
+                {
+                    image: "assets/img/xbox.png",
+                    answer: "Xbox",
+                    options: ["Xbox", "PlayStation", "Nintendo", "Sega"],
+                    fact: "Logo Xbox dengan lingkaran hijau dan 'X' terinspirasi dari bola dunia dan mewakili koneksi global gamers.",
+                    difficulty: 3
+                },
+                {
+                    image: "assets/img/android.png",
+                    answer: "Android",
+                    options: ["Android", "iOS", "Windows", "Linux"],
+                    fact: "Logo Android (Andy the Android) dirancang oleh Irina Blok. Desain open source yang bisa dimodifikasi oleh siapa saja.",
+                    difficulty: 3
+                },
+                {
+                    image: "assets/img/linux.png",
+                    answer: "Linux",
+                    options: ["Linux", "Windows", "macOS", "Unix"],
+                    fact: "Logo Linux (Tux the Penguin) dipilih karena Linus Torvalds pernah digigit penguin saat berkunjung ke kebun binatang.",
+                    difficulty: 3
+                },
+                {
+                    image: "assets/img/paypal.png",
+                    answer: "PayPal",
+                    options: ["PayPal", "Visa", "MasterCard", "Stripe"],
+                    fact: "Logo PayPal dengan dua P biru melambangkan keamanan dan kepercayaan dalam transaksi online.",
+                    difficulty: 3
+                },
+                {
+                    image: "assets/img/spotify.png",
+                    answer: "Spotify",
+                    options: ["Spotify", "Apple Music", "YouTube Music", "Deezer"],
+                    fact: "Logo Spotify dengan gelombang suara dalam lingkaran hijau melambangkan musik dan audio yang mengalir.",
+                    difficulty: 3
+                },
+                {
+                    image: "assets/img/nasa.png",
+                    answer: "NASA",
+                    options: ["NASA", "SpaceX", "ESA", "Roscosmos"],
+                    fact: "Logo NASA (meatball) dengan lingkaran biru, bintang, dan orbit merah dirancang pada 1959 dan menjadi simbol eksplorasi luar angkasa.",
+                    difficulty: 3
+                }
+            ]
+        };
+
+        // Variabel game state
+        let currentLevel = 1;
+        let currentQuestion = 0;
+        let score = 0;
+        let hints = 3;
+        let selectedAnswer = null;
+        let correctAnswers = 0;
+        let hintsUsed = 0;
+        let gameActive = true;
+        let revealed = false;
+        let hintRevealUsed = false;
+        let hintLettersUsed = false;
+        let shuffledQuestions = [];
+
+        // Elemen DOM
+        const logoImg = document.getElementById('logoImg');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const scoreElement = document.getElementById('score');
+        const levelElement = document.getElementById('level');
+        const hintsElement = document.getElementById('hints');
+        const progressElement = document.getElementById('progress');
+        const submitBtn = document.getElementById('submitBtn');
+        const skipBtn = document.getElementById('skipBtn');
+        const hintRevealBtn = document.getElementById('hintReveal');
+        const hintLettersBtn = document.getElementById('hintLetters');
+        const factBox = document.getElementById('factBox');
+        const factText = document.getElementById('factText');
+        
+        // Modal elements
+        const resultModal = document.getElementById('resultModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const modalScore = document.getElementById('modalScore');
+        const modalCorrect = document.getElementById('modalCorrect');
+        const modalHints = document.getElementById('modalHints');
+        const modalPlayAgain = document.getElementById('modalPlayAgain');
+        const modalNextLevel = document.getElementById('modalNextLevel');
+        const modalShareInstagram = document.getElementById('modalShareInstagram');
+        const modalShareWhatsapp = document.getElementById('modalShareWhatsapp');
+        
+        const levelIndicator = document.getElementById('levelIndicator');
+
+        // Fungsi untuk mengacak array (Fisher-Yates shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Fungsi untuk mengacak pertanyaan dalam level
+        function shuffleLevelQuestions() {
+            const currentLevelData = gameData[`level${currentLevel}`];
+            shuffledQuestions = shuffleArray([...currentLevelData]);
+        }
+
+        // Inisialisasi game
+        function initGame() {
+            currentQuestion = 0;
+            score = 0;
+            hints = 3;
+            correctAnswers = 0;
+            hintsUsed = 0;
+            gameActive = true;
+            revealed = false;
+            
+            // Acak pertanyaan untuk level saat ini
+            shuffleLevelQuestions();
+            
+            updateGameInfo();
+            loadQuestion();
+            createLevelDots();
+            
+            // Sembunyikan modal dan fact box
+            resultModal.classList.remove('show');
+            factBox.classList.remove('show');
+        }
+
+        // Buat indikator level
+        function createLevelDots() {
+            levelIndicator.innerHTML = '';
+            const totalLevels = Object.keys(gameData).length;
+            
+            for (let i = 1; i <= totalLevels; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'level-dot';
+                if (i === currentLevel) {
+                    dot.classList.add('active');
+                } else if (i < currentLevel) {
+                    dot.classList.add('completed');
+                }
+                levelIndicator.appendChild(dot);
+            }
+        }
+
+        // Update informasi game
+        function updateGameInfo() {
+            scoreElement.textContent = score;
+            levelElement.textContent = currentLevel;
+            hintsElement.textContent = hints;
+            
+            if (currentQuestion < shuffledQuestions.length) {
+                progressElement.textContent = `${currentQuestion + 1}/${shuffledQuestions.length}`;
+            } else {
+                progressElement.textContent = "Selesai";
+            }
+        }
+
+        // Muat pertanyaan
+        function loadQuestion() {
+            if (!shuffledQuestions || currentQuestion >= shuffledQuestions.length) {
+                showResultModal();
+                return;
+            }
+            
+            const question = shuffledQuestions[currentQuestion];
+            
+            // Reset state
+            selectedAnswer = null;
+            revealed = false;
+            hintRevealUsed = false;
+            hintLettersUsed = false;
+            gameActive = true;
+            factBox.classList.remove('show');
+            submitBtn.disabled = true;
+            
+            // Set gambar logo dengan blur
+            logoImg.src = question.image;
+            logoImg.classList.add('blurred');
+            logoImg.classList.remove('revealed');
+            
+            // Reset filter CSS
+            logoImg.style.filter = '';
+            
+            // Acak opsi jawaban
+            const shuffledOptions = shuffleArray([...question.options]);
+            
+            // Kosongkan container opsi
+            optionsContainer.innerHTML = '';
+            
+            // Buat tombol opsi (horizontal)
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.addEventListener('click', () => selectAnswer(option, button));
+                optionsContainer.appendChild(button);
+            });
+            
+            // Update info game
+            updateGameInfo();
+            
+            // Reset tombol hint
+            hintRevealBtn.disabled = hints <= 0 || hintRevealUsed;
+            hintLettersBtn.disabled = hints <= 0 || hintLettersUsed;
+            
+            // Aktifkan skip button
+            skipBtn.disabled = false;
+        }
+
+        // Pilih jawaban
+        function selectAnswer(answer, button) {
+            if (!gameActive) return;
+            
+            // Hapus seleksi sebelumnya
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Tandai yang dipilih
+            selectedAnswer = answer;
+            button.classList.add('selected');
+            submitBtn.disabled = false;
+        }
+
+        // Submit jawaban
+        function submitAnswer() {
+            if (!selectedAnswer || !gameActive) return;
+            
+            const question = shuffledQuestions[currentQuestion];
+            const isCorrect = selectedAnswer === question.answer;
+            
+            // Tampilkan logo tanpa blur
+            logoImg.classList.remove('blurred');
+            logoImg.classList.add('revealed');
+            
+            // Nonaktifkan semua tombol opsi
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === question.answer) {
+                    btn.classList.add('correct');
+                }
+                if (btn.textContent === selectedAnswer && !isCorrect) {
+                    btn.classList.add('wrong');
+                }
+            });
+            
+            // Hitung skor
+            let questionScore = 0;
+            if (isCorrect) {
+                questionScore = question.difficulty * 100;
+                if (!revealed) questionScore += 50; // Bonus tanpa hint
+                correctAnswers++;
+            }
+            
+            score += questionScore;
+            
+            // Tampilkan fakta
+            factText.textContent = question.fact;
+            factBox.classList.add('show');
+            
+            // Update tampilan
+            updateGameInfo();
+            
+            // Nonaktifkan tombol sementara
+            gameActive = false;
+            submitBtn.disabled = true;
+            skipBtn.disabled = true;
+            hintRevealBtn.disabled = true;
+            hintLettersBtn.disabled = true;
+            
+            // Simpan currentQuestionIndex karena setTimeout
+            const currentQuestionIndex = currentQuestion;
+            
+            // Lanjut ke pertanyaan berikutnya setelah jeda
+            setTimeout(() => {
+                // Pastikan kita masih di pertanyaan yang sama (tidak ada interaksi lain selama timeout)
+                if (currentQuestionIndex === currentQuestion) {
+                    currentQuestion++;
+                    if (currentQuestion < shuffledQuestions.length) {
+                        loadQuestion();
+                    } else {
+                        showResultModal();
+                    }
+                }
+            }, 3000);
+        }
+
+        // Skip pertanyaan
+        function skipQuestion() {
+            if (!gameActive) return;
+            
+            currentQuestion++;
+            
+            if (currentQuestion < shuffledQuestions.length) {
+                loadQuestion();
+            } else {
+                showResultModal();
+            }
+        }
+
+        // Hint: Buka sebagian blur
+        function hintReveal() {
+            if (hints <= 0 || hintRevealUsed || !gameActive) return;
+            
+            hints--;
+            hintsUsed++;
+            hintRevealUsed = true;
+            revealed = true;
+            
+            // Kurangi blur
+            logoImg.classList.remove('blurred');
+            logoImg.style.filter = 'blur(5px) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3))';
+            
+            // Kurangi skor
+            score -= 50;
+            if (score < 0) score = 0;
+            
+            // Update tampilan
+            updateGameInfo();
+            hintRevealBtn.disabled = true;
+        }
+
+        // Hint: Buka huruf pertama
+        function hintLetters() {
+            if (hints <= 0 || hintLettersUsed || !gameActive) return;
+            
+            const question = shuffledQuestions[currentQuestion];
+            const answer = question.answer;
+            
+            // Tampilkan huruf pertama dari jawaban yang benar
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                if (btn.textContent === answer) {
+                    const originalText = btn.textContent;
+                    btn.dataset.originalText = originalText;
+                    btn.innerHTML = `<strong>${answer.charAt(0)}</strong>${answer.slice(1)}`;
+                }
+            });
+            
+            hints--;
+            hintsUsed++;
+            hintLettersUsed = true;
+            
+            // Kurangi skor
+            score -= 30;
+            if (score < 0) score = 0;
+            
+            // Update tampilan
+            updateGameInfo();
+            hintLettersBtn.disabled = true;
+        }
+
+        // Tampilkan modal hasil
+        function showResultModal() {
+            gameActive = false;
+            
+            const totalQuestions = shuffledQuestions ? shuffledQuestions.length : 0;
+            
+            // Set konten modal berdasarkan performa
+            if (totalQuestions > 0 && correctAnswers === totalQuestions) {
+                modalTitle.textContent = "Sempurna! 🎉";
+                modalSubtitle.textContent = "Anda benar semua! Anda benar-benar ahli identitas visual!";
+                modalIcon.innerHTML = '<i class="fas fa-crown"></i>';
+            } else if (correctAnswers >= totalQuestions * 0.7) {
+                modalTitle.textContent = "Hebat! ✨";
+                modalSubtitle.textContent = "Pengetahuan visual Anda sangat mengesankan!";
+                modalIcon.innerHTML = '<i class="fas fa-star"></i>';
+            } else {
+                modalTitle.textContent = "Level Selesai! 🎯";
+                modalSubtitle.textContent = `Anda telah menyelesaikan Level ${currentLevel}`;
+                modalIcon.innerHTML = '<i class="fas fa-trophy"></i>';
+            }
+            
+            // Update statistik modal
+            modalScore.textContent = score;
+            modalCorrect.textContent = `${correctAnswers}/${totalQuestions}`;
+            modalHints.textContent = hintsUsed;
+            
+            // Tampilkan/tombol next level
+            if (currentLevel < Object.keys(gameData).length) {
+                modalNextLevel.style.display = 'flex';
+                modalNextLevel.innerHTML = `<i class="fas fa-arrow-right"></i> Level ${currentLevel + 1}`;
+            } else {
+                modalNextLevel.style.display = 'none';
+                modalTitle.textContent = "Selamat! 🏆";
+                modalSubtitle.textContent = "Anda telah menyelesaikan semua level! Anda adalah master identitas visual!";
+                modalIcon.innerHTML = '<i class="fas fa-medal"></i>';
+            }
+            
+            // Tampilkan modal dengan animasi
+            resultModal.classList.add('show');
+        }
+
+        // Tutup modal
+        function closeModal() {
+            resultModal.classList.remove('show');
+        }
+
+        // Main lagi
+        function playAgain() {
+            closeModal();
+            currentLevel = 1;
+            initGame();
+        }
+
+        // Level berikutnya
+        function nextLevel() {
+            closeModal();
+            currentLevel++;
+            currentQuestion = 0;
+            correctAnswers = 0;
+            hintsUsed = 0;
+            initGame();
+        }
+
+        // Share ke Instagram
+        function shareToInstagram() {
+            const text = `Saya baru saja bermain Logo Hunt dan mendapatkan skor ${score} di Level ${currentLevel}! Coba tantangannya di pameran DKV!`;
+            const url = window.location.href;
+            
+            // Untuk Instagram, kita bisa menggunakan URL yang dibagikan
+            alert(`Bagikan hasil Anda di Instagram!\n\n${text}\n\nSalin teks ini dan tempel di Instagram Anda.`);
+            
+            // Simulasi share (di lingkungan nyata akan menggunakan API Instagram)
+            navigator.clipboard.writeText(text + "\n" + url)
+                .then(() => alert("Teks telah disalin ke clipboard! Tempel di Instagram Anda."));
+        }
+
+        // Share ke WhatsApp
+        function shareToWhatsapp() {
+            const text = `Saya baru saja bermain Logo Hunt dan mendapatkan skor ${score} di Level ${currentLevel}! Coba tantangannya di pameran DKV!`;
+            const url = window.location.href;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi game setelah DOM siap
+            initGame();
+            
+            // Pasang event listeners
+            submitBtn.addEventListener('click', submitAnswer);
+            skipBtn.addEventListener('click', skipQuestion);
+            hintRevealBtn.addEventListener('click', hintReveal);
+            hintLettersBtn.addEventListener('click', hintLetters);
+            modalPlayAgain.addEventListener('click', playAgain);
+            modalNextLevel.addEventListener('click', nextLevel);
+            modalClose.addEventListener('click', closeModal);
+            modalShareInstagram.addEventListener('click', shareToInstagram);
+            modalShareWhatsapp.addEventListener('click', shareToWhatsapp);
+            
+            // Tutup modal saat klik di luar modal
+            resultModal.addEventListener('click', function(e) {
+                if (e.target === resultModal) {
+                    closeModal();
+                }
+            });
+            
+            // Handle error gambar
+            logoImg.onerror = function() {
+                console.warn("Gambar gagal dimuat, menggunakan fallback...");
+                // Buat fallback SVG sederhana
+                const svgData = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+                        <rect width="200" height="200" fill="#6C63FF" opacity="0.1"/>
+                        <circle cx="100" cy="100" r="80" fill="#6C63FF" opacity="0.2"/>
+                        <text x="100" y="115" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="40" font-weight="bold">
+                            L
+                        </text>
+                        <text x="100" y="160" text-anchor="middle" fill="#A0A3BD" font-family="Arial, sans-serif" font-size="14">
+                            Logo
+                        </text>
+                    </svg>`;
+                
+                // Konversi SVG ke data URL
+                const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+                const svgUrl = URL.createObjectURL(svgBlob);
+                this.src = svgUrl;
+            };
+        });
+
+        // Tambahkan interaksi keyboard
+        document.addEventListener('keydown', (e) => {
+            // ESC untuk menutup modal
+            if (e.key === 'Escape' && resultModal.classList.contains('show')) {
+                closeModal();
+                return;
+            }
+            
+            // Cek apakah modal sedang terbuka
+            if (resultModal.classList.contains('show')) {
+                // Di modal, handle tombol tertentu
+                if (e.key === 'Enter' && modalNextLevel.style.display !== 'none') {
+                    modalNextLevel.click();
+                } else if (e.key === 'r' || e.key === 'R') {
+                    modalPlayAgain.click();
+                }
+                return;
+            }
+            
+            if (!gameActive) return;
+            
+            // Pilih jawaban dengan angka 1-4
+            if (e.key >= '1' && e.key <= '4') {
+                const index = parseInt(e.key) - 1;
+                const buttons = document.querySelectorAll('.option-btn');
+                if (buttons[index] && !buttons[index].disabled) {
+                    buttons[index].click();
+                }
+            }
+            
+            // Submit dengan Enter
+            if (e.key === 'Enter' && !submitBtn.disabled) {
+                submitBtn.click();
+            }
+            
+            // Skip dengan Spasi
+            if (e.key === ' ' && !skipBtn.disabled) {
+                skipBtn.click();
+            }
+            
+            // Hint dengan huruf H (reveal) dan L (letters)
+            if (e.key === 'h' || e.key === 'H') {
+                if (!hintRevealBtn.disabled) {
+                    hintRevealBtn.click();
+                }
+            }
+            
+            if (e.key === 'l' || e.key === 'L') {
+                if (!hintLettersBtn.disabled) {
+                    hintLettersBtn.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
