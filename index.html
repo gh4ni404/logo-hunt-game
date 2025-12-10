@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,18 +15,39 @@
         }
 
         :root {
-            --primary: #6C63FF;
-            --secondary: #FF6584;
-            --accent: #36D1DC;
-            --dark: #2A2D43;
-            --light: #F8F9FA;
+            /* Warna utama berdasarkan list yang diberikan */
+            --primary: #ec268f;
+            /* Pink cerah */
+            --secondary: #f58634;
+            /* Oranye */
+            --accent: #f65566;
+            /* Pink kemerahan */
+            --accent2: #f76a53;
+            /* Oranye kemerahan */
+            --accent3: #f43c7f;
+            /* Pink gelap */
+
+            /* Warna untuk latar belakang terang */
+            --bg-light: #fef0f5;
+            --bg-light2: #fff5f0;
+            --text-dark: #2A2D43;
+            /* Teks gelap untuk kontras */
+            --text-medium: #4A4D63;
+            /* Teks medium */
+            --card-bg: rgba(255, 255, 255, 0.9);
+            /* Latar belakang kartu */
+            --border-light: rgba(236, 38, 143, 0.15);
+            /* Border transparan */
+
+            /* Warna sistem */
             --correct: #4CAF50;
             --wrong: #FF5252;
+            --shadow: rgba(0, 0, 0, 0.08);
         }
 
         body {
-            background: linear-gradient(135deg, #2A2D43 0%, #1C1E2E 100%);
-            color: var(--light);
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-light2) 100%);
+            color: var(--text-dark);
             min-height: 100vh;
             overflow: hidden;
             display: flex;
@@ -45,26 +67,29 @@
         /* Header Styles */
         header {
             text-align: center;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             border-radius: 20px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-light);
             flex-shrink: 0;
+            padding: 20px;
+            box-shadow: 0 5px 15px var(--shadow);
         }
 
         h1 {
             font-size: 2rem;
             margin-bottom: 8px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .subtitle {
             font-size: 0.9rem;
-            color: #A0A3BD;
+            color: var(--text-medium);
             margin-bottom: 15px;
         }
 
@@ -79,44 +104,58 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(236, 38, 143, 0.2);
             transition: all 0.3s;
         }
 
         .level-dot.active {
-            background: var(--accent);
+            background: var(--accent2);
             transform: scale(1.3);
+            box-shadow: 0 0 8px rgba(247, 106, 83, 0.5);
         }
 
         .level-dot.completed {
-            background: var(--correct);
+            background: var(--secondary);
+            box-shadow: 0 0 6px rgba(245, 134, 52, 0.4);
         }
 
         /* Game Info Styles */
         .game-info {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 12px;
             gap: 10px;
             flex-shrink: 0;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 5px 15px var(--shadow);
         }
 
         .info-box {
             text-align: center;
             padding: 8px;
+            background: rgba(236, 38, 143, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .info-box:hover {
+            transform: translateY(-3px);
+            background: rgba(236, 38, 143, 0.1);
+            box-shadow: 0 5px 10px rgba(236, 38, 143, 0.15);
         }
 
         .info-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--accent);
+            color: var(--primary);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .info-label {
             font-size: 0.8rem;
-            color: #A0A3BD;
+            color: var(--text-medium);
             margin-top: 4px;
         }
 
@@ -126,11 +165,13 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-light);
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px var(--shadow);
         }
 
         /* Logo Display - Aspect Ratio 1:1 */
@@ -148,7 +189,7 @@
             width: 100%;
             max-width: 300px;
             aspect-ratio: 1/1;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             display: flex;
             align-items: center;
@@ -156,8 +197,9 @@
             padding: 20px;
             position: relative;
             overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(236, 38, 143, 0.2);
             margin: 0 auto;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         .logo-image {
@@ -166,12 +208,14 @@
             object-fit: contain;
             background-color: white;
             border-radius: 128px;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.1));
             transition: transform 0.3s, filter 0.5s;
+            position: relative;
+            z-index: 1;
         }
 
         .logo-image.blurred {
-            filter: blur(15px) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+            filter: blur(15px) drop-shadow(0 8px 15px rgba(0, 0, 0, 0.1));
         }
 
         .logo-image.revealed {
@@ -180,8 +224,17 @@
         }
 
         @keyframes reveal {
-            0% { filter: blur(15px); opacity: 0.5; }
-            100% { filter: blur(0); opacity: 1; }
+            0% {
+                filter: blur(15px);
+                opacity: 0.5;
+                transform: scale(0.95);
+            }
+
+            100% {
+                filter: blur(0);
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .hint-buttons {
@@ -192,9 +245,9 @@
         }
 
         .hint-btn {
-            background: rgba(108, 99, 255, 0.2);
-            border: 1px solid var(--primary);
-            color: var(--light);
+            background: linear-gradient(135deg, rgba(236, 38, 143, 0.1), rgba(245, 134, 52, 0.1));
+            border: 1px solid rgba(236, 38, 143, 0.3);
+            color: var(--text-dark);
             padding: 8px 15px;
             border-radius: 50px;
             cursor: pointer;
@@ -204,11 +257,14 @@
             align-items: center;
             gap: 6px;
             white-space: nowrap;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
         }
 
         .hint-btn:hover {
-            background: rgba(108, 99, 255, 0.4);
+            background: linear-gradient(135deg, rgba(236, 38, 143, 0.2), rgba(245, 134, 52, 0.2));
             transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
         }
 
         .hint-btn:disabled {
@@ -218,6 +274,7 @@
 
         .hint-btn i {
             font-size: 0.9rem;
+            color: var(--primary);
         }
 
         /* Options Container - Horizontal Layout */
@@ -232,9 +289,9 @@
         }
 
         .option-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            color: var(--light);
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(236, 38, 143, 0.15);
+            color: var(--text-dark);
             padding: 12px 15px;
             border-radius: 12px;
             cursor: pointer;
@@ -248,29 +305,34 @@
             flex: 1;
             min-width: 120px;
             max-width: 180px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
         }
 
         .option-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--primary);
+            background: rgba(236, 38, 143, 0.08);
+            border-color: rgba(236, 38, 143, 0.3);
             transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
         }
 
         .option-btn.selected {
-            background: rgba(108, 99, 255, 0.3);
+            background: linear-gradient(135deg, rgba(236, 38, 143, 0.15), rgba(245, 86, 102, 0.15));
             border-color: var(--primary);
+            box-shadow: 0 5px 12px rgba(236, 38, 143, 0.15);
         }
 
         .option-btn.correct {
-            background: rgba(76, 175, 80, 0.3);
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(76, 175, 80, 0.2));
             border-color: var(--correct);
-            color: #C8E6C9;
+            color: #2E7D32;
+            box-shadow: 0 5px 12px rgba(76, 175, 80, 0.15);
         }
 
         .option-btn.wrong {
-            background: rgba(255, 82, 82, 0.3);
+            background: linear-gradient(135deg, rgba(255, 82, 82, 0.15), rgba(255, 82, 82, 0.2));
             border-color: var(--wrong);
-            color: #FFCDD2;
+            color: #D32F2F;
+            box-shadow: 0 5px 12px rgba(255, 82, 82, 0.15);
         }
 
         .option-btn:disabled {
@@ -293,7 +355,7 @@
         }
 
         .control-btn {
-            background: linear-gradient(135deg, var(--primary), #8A84FF);
+            background: linear-gradient(135deg, var(--primary), var(--accent3));
             color: white;
             border: none;
             padding: 12px 20px;
@@ -305,7 +367,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(236, 38, 143, 0.3);
             flex: 1;
             max-width: 200px;
             justify-content: center;
@@ -314,7 +376,8 @@
 
         .control-btn:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.6);
+            box-shadow: 0 8px 20px rgba(236, 38, 143, 0.4);
+            background: linear-gradient(135deg, var(--accent3), var(--primary));
         }
 
         .control-btn:disabled {
@@ -323,16 +386,17 @@
         }
 
         .control-btn.secondary {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: none;
+            background: linear-gradient(135deg, rgba(245, 134, 52, 0.9), rgba(247, 106, 83, 0.9));
+            box-shadow: 0 5px 15px rgba(245, 134, 52, 0.25);
         }
 
         .control-btn.secondary:hover:not(:disabled) {
-            background: rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, rgba(247, 106, 83, 0.95), rgba(245, 134, 52, 0.95));
+            box-shadow: 0 8px 20px rgba(245, 134, 52, 0.35);
         }
 
         .fact-box {
-            background: rgba(54, 209, 220, 0.1);
+            background: linear-gradient(135deg, rgba(246, 85, 102, 0.08), rgba(244, 60, 127, 0.08));
             border-left: 4px solid var(--accent);
             padding: 15px;
             border-radius: 10px;
@@ -340,6 +404,9 @@
             display: none;
             max-height: 80px;
             overflow-y: auto;
+            border-top: 1px solid rgba(246, 85, 102, 0.1);
+            border-right: 1px solid rgba(246, 85, 102, 0.1);
+            border-bottom: 1px solid rgba(246, 85, 102, 0.1);
         }
 
         .fact-box.show {
@@ -348,7 +415,7 @@
         }
 
         .fact-title {
-            color: var(--accent);
+            color: var(--secondary);
             font-weight: bold;
             margin-bottom: 8px;
             display: flex;
@@ -360,28 +427,37 @@
         .fact-text {
             font-size: 0.85rem;
             line-height: 1.4;
-            color: #E0E0E0;
+            color: var(--text-medium);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Footer */
         .footer {
             text-align: center;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             border-radius: 15px;
             font-size: 0.8rem;
-            color: #A0A3BD;
+            color: var(--text-medium);
             flex-shrink: 0;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 5px 15px var(--shadow);
         }
 
         .logo-dkv {
             font-weight: bold;
-            color: var(--accent);
+            color: var(--secondary);
         }
 
         /* Modal Styles */
@@ -391,7 +467,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(10px);
             display: none;
             justify-content: center;
@@ -406,14 +482,14 @@
         }
 
         .modal {
-            background: linear-gradient(135deg, #2A2D43 0%, #1C1E2E 100%);
+            background: var(--card-bg);
             border-radius: 25px;
             padding: 30px;
             width: 100%;
             max-width: 500px;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
             animation: modalSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             overflow: hidden;
         }
@@ -425,7 +501,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--accent2), var(--accent3));
             border-radius: 25px 25px 0 0;
         }
 
@@ -434,6 +510,7 @@
                 opacity: 0;
                 transform: translateY(-50px) scale(0.9);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -448,7 +525,7 @@
         .modal-icon {
             font-size: 4rem;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -456,14 +533,21 @@
         }
 
         @keyframes iconFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .modal-title {
             font-size: 2rem;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -471,7 +555,7 @@
         }
 
         .modal-subtitle {
-            color: #A0A3BD;
+            color: var(--text-medium);
             font-size: 1rem;
             margin-bottom: 20px;
         }
@@ -484,30 +568,32 @@
         }
 
         .stat-box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.8);
             border-radius: 12px;
             padding: 15px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-light);
             transition: all 0.3s;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
         }
 
         .stat-box:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
-            background: rgba(108, 99, 255, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
         }
 
         .stat-value {
             font-size: 1.8rem;
             font-weight: bold;
-            color: var(--accent);
+            color: var(--primary);
             margin-bottom: 5px;
         }
 
         .stat-label {
             font-size: 0.8rem;
-            color: #A0A3BD;
+            color: var(--text-medium);
         }
 
         .modal-buttons {
@@ -532,35 +618,43 @@
         }
 
         .modal-btn.primary {
-            background: linear-gradient(135deg, var(--primary), #8A84FF);
+            background: linear-gradient(135deg, var(--primary), var(--accent3));
             color: white;
+            box-shadow: 0 5px 15px rgba(236, 38, 143, 0.3);
         }
 
         .modal-btn.secondary {
-            background: rgba(255, 255, 255, 0.08);
-            color: var(--light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(245, 134, 52, 0.9), rgba(247, 106, 83, 0.9));
+            color: white;
+            border: 1px solid rgba(245, 134, 52, 0.3);
+            box-shadow: 0 5px 15px rgba(245, 134, 52, 0.2);
         }
 
         .modal-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-btn.primary:hover {
+            box-shadow: 0 10px 20px rgba(236, 38, 143, 0.4);
+            background: linear-gradient(135deg, var(--accent3), var(--primary));
         }
 
         .modal-btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 20px rgba(245, 134, 52, 0.3);
+            background: linear-gradient(135deg, rgba(247, 106, 83, 0.95), rgba(245, 134, 52, 0.95));
         }
 
         .modal-close {
             position: absolute;
             top: 15px;
             right: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
+            background: rgba(236, 38, 143, 0.1);
+            border: 1px solid rgba(236, 38, 143, 0.2);
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            color: var(--light);
+            color: var(--text-dark);
             cursor: pointer;
             font-size: 1rem;
             display: flex;
@@ -571,8 +665,9 @@
         }
 
         .modal-close:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(236, 38, 143, 0.2);
             transform: rotate(90deg);
+            border-color: var(--primary);
         }
 
         .share-modal {
@@ -581,7 +676,7 @@
             gap: 12px;
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--border-light);
         }
 
         .share-btn {
@@ -598,18 +693,28 @@
         }
 
         .share-btn.instagram {
-            background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D);
+            background: linear-gradient(135deg, var(--primary), var(--accent3));
             color: white;
+            box-shadow: 0 5px 15px rgba(236, 38, 143, 0.3);
         }
 
         .share-btn.whatsapp {
-            background: #25D366;
+            background: linear-gradient(135deg, var(--secondary), var(--accent2));
             color: white;
+            box-shadow: 0 5px 15px rgba(245, 134, 52, 0.3);
         }
 
         .share-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .share-btn.instagram:hover {
+            box-shadow: 0 8px 20px rgba(236, 38, 143, 0.4);
+        }
+
+        .share-btn.whatsapp:hover {
+            box-shadow: 0 8px 20px rgba(245, 134, 52, 0.4);
         }
 
         /* Responsive Adjustments */
@@ -617,7 +722,7 @@
             .options-container {
                 max-width: 600px;
             }
-            
+
             .option-btn {
                 min-width: 100px;
                 max-width: 150px;
@@ -630,71 +735,71 @@
                 padding: 10px;
                 gap: 10px;
             }
-            
+
             header {
                 padding: 12px;
             }
-            
+
             h1 {
                 font-size: 1.8rem;
             }
-            
+
             .subtitle {
                 font-size: 0.85rem;
             }
-            
+
             .game-info {
                 grid-template-columns: repeat(2, 1fr);
                 padding: 10px;
             }
-            
+
             .logo-display {
                 max-width: 250px;
             }
-            
+
             .options-container {
                 max-width: 500px;
                 flex-wrap: wrap;
             }
-            
+
             .option-btn {
                 min-width: 45%;
                 max-width: 45%;
                 font-size: 0.85rem;
                 padding: 10px 12px;
             }
-            
+
             .controls {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .control-btn {
                 width: 100%;
                 max-width: 250px;
             }
-            
+
             .hint-btn {
                 font-size: 0.75rem;
                 padding: 6px 12px;
             }
-            
+
             .modal {
                 padding: 20px;
             }
-            
+
             .modal-title {
                 font-size: 1.8rem;
             }
-            
+
             .modal-stats {
                 grid-template-columns: 1fr;
             }
-            
+
             .modal-buttons {
                 flex-direction: column;
             }
-            
+
             .share-modal {
                 flex-direction: column;
             }
@@ -704,31 +809,38 @@
             .game-info {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
+
             .info-value {
                 font-size: 1.3rem;
             }
-            
+
             .logo-display {
                 max-width: 200px;
             }
-            
+
             .option-btn {
                 min-width: 100%;
                 max-width: 100%;
                 font-size: 0.8rem;
             }
-            
+
             .hint-btn {
                 font-size: 0.7rem;
                 padding: 5px 10px;
             }
         }
 
-        /* Animasi kemenangan */
+        /* Animasi kemenangan dengan warna baru */
         @keyframes confetti {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         .confetti {
@@ -742,12 +854,20 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <header>
-            <h1><i class="fas fa-eye"></i> GERKA - LOGO HUNT</h1>
-            <p class="subtitle">Uji pengetahuan visual Anda dalam tebak logo. Tantang diri Anda dengan tiga level berbeda!</p>
-            <div class="level-indicator" id="levelIndicator"></div>
+        <header style="display: flex; align-items: center; gap: 15px; justify-content: center;">
+            <img src="assets/img/provinsi.png" alt="Logo GERKA" style="width: 80px; margin-bottom: 10px;">
+            <img src="assets/img/skadel.png" alt="Logo GERKA" style="width: 80px; margin-bottom: 10px;">
+            <div>
+                <h1><i class="fas fa-eye"></i> GERKA - LOGO HUNT</h1>
+                <p class="subtitle">Uji pengetahuan visual Anda dalam tebak logo. Tantang diri Anda dengan tiga level
+                    berbeda!</p>
+                <div class="level-indicator" id="levelIndicator"></div>
+            </div>
+            <img src="assets/img/jurusan.png" alt="Logo GERKA" style="width: 80px; margin-bottom: 10px;">
+            <img src="assets/img/gerka.png" alt="Logo GERKA" style="width: 80px; margin-bottom: 10px;">
         </header>
 
         <div class="game-info">
@@ -774,7 +894,7 @@
                 <div class="logo-display">
                     <img id="logoImg" class="logo-image blurred" src="" alt="Logo untuk ditebak">
                 </div>
-                
+
                 <div class="hint-buttons">
                     <button class="hint-btn" id="hintReveal">
                         <i class="fas fa-eye"></i> Buka Sebagian
@@ -801,7 +921,8 @@
                     <div class="fact-title">
                         <i class="fas fa-lightbulb"></i> FAKTA MENARIK
                     </div>
-                    <p class="fact-text" id="factText">Fakta tentang logo ini akan muncul di sini setelah Anda menjawab.</p>
+                    <p class="fact-text" id="factText">Fakta tentang logo ini akan muncul di sini setelah Anda menjawab.
+                    </p>
                 </div>
             </div>
         </div>
@@ -818,7 +939,7 @@
             <button class="modal-close" id="modalClose">
                 <i class="fas fa-times"></i>
             </button>
-            
+
             <div class="modal-header">
                 <div class="modal-icon" id="modalIcon">
                     <i class="fas fa-trophy"></i>
@@ -1068,7 +1189,7 @@
         const hintLettersBtn = document.getElementById('hintLetters');
         const factBox = document.getElementById('factBox');
         const factText = document.getElementById('factText');
-        
+
         // Modal elements
         const resultModal = document.getElementById('resultModal');
         const modalClose = document.getElementById('modalClose');
@@ -1082,7 +1203,7 @@
         const modalNextLevel = document.getElementById('modalNextLevel');
         const modalShareInstagram = document.getElementById('modalShareInstagram');
         const modalShareWhatsapp = document.getElementById('modalShareWhatsapp');
-        
+
         const levelIndicator = document.getElementById('levelIndicator');
 
         // Fungsi untuk mengacak array (Fisher-Yates shuffle)
@@ -1109,14 +1230,14 @@
             hintsUsed = 0;
             gameActive = true;
             revealed = false;
-            
+
             // Acak pertanyaan untuk level saat ini
             shuffleLevelQuestions();
-            
+
             updateGameInfo();
             loadQuestion();
             createLevelDots();
-            
+
             // Sembunyikan modal dan fact box
             resultModal.classList.remove('show');
             factBox.classList.remove('show');
@@ -1126,7 +1247,7 @@
         function createLevelDots() {
             levelIndicator.innerHTML = '';
             const totalLevels = Object.keys(gameData).length;
-            
+
             for (let i = 1; i <= totalLevels; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'level-dot';
@@ -1144,7 +1265,7 @@
             scoreElement.textContent = score;
             levelElement.textContent = currentLevel;
             hintsElement.textContent = hints;
-            
+
             if (currentQuestion < shuffledQuestions.length) {
                 progressElement.textContent = `${currentQuestion + 1}/${shuffledQuestions.length}`;
             } else {
@@ -1158,9 +1279,9 @@
                 showResultModal();
                 return;
             }
-            
+
             const question = shuffledQuestions[currentQuestion];
-            
+
             // Reset state
             selectedAnswer = null;
             revealed = false;
@@ -1169,21 +1290,21 @@
             gameActive = true;
             factBox.classList.remove('show');
             submitBtn.disabled = true;
-            
+
             // Set gambar logo dengan blur
             logoImg.src = question.image;
             logoImg.classList.add('blurred');
             logoImg.classList.remove('revealed');
-            
+
             // Reset filter CSS
             logoImg.style.filter = '';
-            
+
             // Acak opsi jawaban
             const shuffledOptions = shuffleArray([...question.options]);
-            
+
             // Kosongkan container opsi
             optionsContainer.innerHTML = '';
-            
+
             // Buat tombol opsi (horizontal)
             shuffledOptions.forEach(option => {
                 const button = document.createElement('button');
@@ -1192,14 +1313,14 @@
                 button.addEventListener('click', () => selectAnswer(option, button));
                 optionsContainer.appendChild(button);
             });
-            
+
             // Update info game
             updateGameInfo();
-            
+
             // Reset tombol hint
             hintRevealBtn.disabled = hints <= 0 || hintRevealUsed;
             hintLettersBtn.disabled = hints <= 0 || hintLettersUsed;
-            
+
             // Aktifkan skip button
             skipBtn.disabled = false;
         }
@@ -1207,12 +1328,12 @@
         // Pilih jawaban
         function selectAnswer(answer, button) {
             if (!gameActive) return;
-            
+
             // Hapus seleksi sebelumnya
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.classList.remove('selected');
             });
-            
+
             // Tandai yang dipilih
             selectedAnswer = answer;
             button.classList.add('selected');
@@ -1222,14 +1343,14 @@
         // Submit jawaban
         function submitAnswer() {
             if (!selectedAnswer || !gameActive) return;
-            
+
             const question = shuffledQuestions[currentQuestion];
             const isCorrect = selectedAnswer === question.answer;
-            
+
             // Tampilkan logo tanpa blur
             logoImg.classList.remove('blurred');
             logoImg.classList.add('revealed');
-            
+
             // Nonaktifkan semua tombol opsi
             document.querySelectorAll('.option-btn').forEach(btn => {
                 btn.disabled = true;
@@ -1240,7 +1361,7 @@
                     btn.classList.add('wrong');
                 }
             });
-            
+
             // Hitung skor
             let questionScore = 0;
             if (isCorrect) {
@@ -1248,26 +1369,26 @@
                 if (!revealed) questionScore += 50; // Bonus tanpa hint
                 correctAnswers++;
             }
-            
+
             score += questionScore;
-            
+
             // Tampilkan fakta
             factText.textContent = question.fact;
             factBox.classList.add('show');
-            
+
             // Update tampilan
             updateGameInfo();
-            
+
             // Nonaktifkan tombol sementara
             gameActive = false;
             submitBtn.disabled = true;
             skipBtn.disabled = true;
             hintRevealBtn.disabled = true;
             hintLettersBtn.disabled = true;
-            
+
             // Simpan currentQuestionIndex karena setTimeout
             const currentQuestionIndex = currentQuestion;
-            
+
             // Lanjut ke pertanyaan berikutnya setelah jeda
             setTimeout(() => {
                 // Pastikan kita masih di pertanyaan yang sama (tidak ada interaksi lain selama timeout)
@@ -1285,9 +1406,9 @@
         // Skip pertanyaan
         function skipQuestion() {
             if (!gameActive) return;
-            
+
             currentQuestion++;
-            
+
             if (currentQuestion < shuffledQuestions.length) {
                 loadQuestion();
             } else {
@@ -1298,20 +1419,20 @@
         // Hint: Buka sebagian blur
         function hintReveal() {
             if (hints <= 0 || hintRevealUsed || !gameActive) return;
-            
+
             hints--;
             hintsUsed++;
             hintRevealUsed = true;
             revealed = true;
-            
+
             // Kurangi blur
             logoImg.classList.remove('blurred');
             logoImg.style.filter = 'blur(5px) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3))';
-            
+
             // Kurangi skor
             score -= 50;
             if (score < 0) score = 0;
-            
+
             // Update tampilan
             updateGameInfo();
             hintRevealBtn.disabled = true;
@@ -1320,10 +1441,10 @@
         // Hint: Buka huruf pertama
         function hintLetters() {
             if (hints <= 0 || hintLettersUsed || !gameActive) return;
-            
+
             const question = shuffledQuestions[currentQuestion];
             const answer = question.answer;
-            
+
             // Tampilkan huruf pertama dari jawaban yang benar
             document.querySelectorAll('.option-btn').forEach(btn => {
                 if (btn.textContent === answer) {
@@ -1332,15 +1453,15 @@
                     btn.innerHTML = `<strong>${answer.charAt(0)}</strong>${answer.slice(1)}`;
                 }
             });
-            
+
             hints--;
             hintsUsed++;
             hintLettersUsed = true;
-            
+
             // Kurangi skor
             score -= 30;
             if (score < 0) score = 0;
-            
+
             // Update tampilan
             updateGameInfo();
             hintLettersBtn.disabled = true;
@@ -1349,9 +1470,9 @@
         // Tampilkan modal hasil
         function showResultModal() {
             gameActive = false;
-            
+
             const totalQuestions = shuffledQuestions ? shuffledQuestions.length : 0;
-            
+
             // Set konten modal berdasarkan performa
             if (totalQuestions > 0 && correctAnswers === totalQuestions) {
                 modalTitle.textContent = "Sempurna! 🎉";
@@ -1366,12 +1487,12 @@
                 modalSubtitle.textContent = `Anda telah menyelesaikan Level ${currentLevel}`;
                 modalIcon.innerHTML = '<i class="fas fa-trophy"></i>';
             }
-            
+
             // Update statistik modal
             modalScore.textContent = score;
             modalCorrect.textContent = `${correctAnswers}/${totalQuestions}`;
             modalHints.textContent = hintsUsed;
-            
+
             // Tampilkan/tombol next level
             if (currentLevel < Object.keys(gameData).length) {
                 modalNextLevel.style.display = 'flex';
@@ -1382,7 +1503,7 @@
                 modalSubtitle.textContent = "Anda telah menyelesaikan semua level! Anda adalah master identitas visual!";
                 modalIcon.innerHTML = '<i class="fas fa-medal"></i>';
             }
-            
+
             // Tampilkan modal dengan animasi
             resultModal.classList.add('show');
         }
@@ -1413,10 +1534,10 @@
         function shareToInstagram() {
             const text = `Saya baru saja bermain Logo Hunt dan mendapatkan skor ${score} di Level ${currentLevel}! Coba tantangannya di pameran DKV!`;
             const url = window.location.href;
-            
+
             // Untuk Instagram, kita bisa menggunakan URL yang dibagikan
             alert(`Bagikan hasil Anda di Instagram!\n\n${text}\n\nSalin teks ini dan tempel di Instagram Anda.`);
-            
+
             // Simulasi share (di lingkungan nyata akan menggunakan API Instagram)
             navigator.clipboard.writeText(text + "\n" + url)
                 .then(() => alert("Teks telah disalin ke clipboard! Tempel di Instagram Anda."));
@@ -1427,15 +1548,15 @@
             const text = `Saya baru saja bermain Logo Hunt dan mendapatkan skor ${score} di Level ${currentLevel}! Coba tantangannya di pameran DKV!`;
             const url = window.location.href;
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`;
-            
+
             window.open(whatsappUrl, '_blank');
         }
 
         // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Inisialisasi game setelah DOM siap
             initGame();
-            
+
             // Pasang event listeners
             submitBtn.addEventListener('click', submitAnswer);
             skipBtn.addEventListener('click', skipQuestion);
@@ -1446,16 +1567,16 @@
             modalClose.addEventListener('click', closeModal);
             modalShareInstagram.addEventListener('click', shareToInstagram);
             modalShareWhatsapp.addEventListener('click', shareToWhatsapp);
-            
+
             // Tutup modal saat klik di luar modal
-            resultModal.addEventListener('click', function(e) {
+            resultModal.addEventListener('click', function (e) {
                 if (e.target === resultModal) {
                     closeModal();
                 }
             });
-            
+
             // Handle error gambar
-            logoImg.onerror = function() {
+            logoImg.onerror = function () {
                 console.warn("Gambar gagal dimuat, menggunakan fallback...");
                 // Buat fallback SVG sederhana
                 const svgData = `
@@ -1469,9 +1590,9 @@
                             Logo
                         </text>
                     </svg>`;
-                
+
                 // Konversi SVG ke data URL
-                const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+                const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
                 const svgUrl = URL.createObjectURL(svgBlob);
                 this.src = svgUrl;
             };
@@ -1484,7 +1605,7 @@
                 closeModal();
                 return;
             }
-            
+
             // Cek apakah modal sedang terbuka
             if (resultModal.classList.contains('show')) {
                 // Di modal, handle tombol tertentu
@@ -1495,9 +1616,9 @@
                 }
                 return;
             }
-            
+
             if (!gameActive) return;
-            
+
             // Pilih jawaban dengan angka 1-4
             if (e.key >= '1' && e.key <= '4') {
                 const index = parseInt(e.key) - 1;
@@ -1506,24 +1627,24 @@
                     buttons[index].click();
                 }
             }
-            
+
             // Submit dengan Enter
             if (e.key === 'Enter' && !submitBtn.disabled) {
                 submitBtn.click();
             }
-            
+
             // Skip dengan Spasi
             if (e.key === ' ' && !skipBtn.disabled) {
                 skipBtn.click();
             }
-            
+
             // Hint dengan huruf H (reveal) dan L (letters)
             if (e.key === 'h' || e.key === 'H') {
                 if (!hintRevealBtn.disabled) {
                     hintRevealBtn.click();
                 }
             }
-            
+
             if (e.key === 'l' || e.key === 'L') {
                 if (!hintLettersBtn.disabled) {
                     hintLettersBtn.click();
@@ -1532,4 +1653,5 @@
         });
     </script>
 </body>
+
 </html>
